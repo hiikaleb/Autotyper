@@ -1,0 +1,22 @@
+{
+  "start_hotkey": "ctrl+alt+print screen",
+  "screenshot_hotkey": "print screen",
+  "screenshot_region_hotkey": "shift+print screen",
+  "error_percent": 0,
+  "min_delay_ms": 1,
+  "max_delay_ms": 1,
+  "remove_error": true,
+  "add_error": true,
+  "swap_error": true,
+  "screenshot_folder": "screenshots",
+  "minimize_to_tray": true,
+  "start_hidden": true,
+  "start_with_windows": true,
+  "theme": "glass",
+  "typing_sound": false,
+  "auto_reduce_memory": true,
+  "auto_reduce_interval_min": 10,
+  "auto_reduce_threshold_percent": 70,
+  "projects_root": "\\\\192.168.137.1\\paxta\\PASTA\\PROJETOS\\PR - projects\\premiere\\Projetos",
+  "active_project": "DOCUMENTARIO-2"
+}

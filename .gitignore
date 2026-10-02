@@ -1,0 +1,30 @@
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Segredos e ambiente
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+firebase-adminsdk*.json
+*service-account*.json
+
+# Logs e temporarios
+*.log
+*.tmp
+*.bak
+
+# Editores
+.vscode/
+.idea/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc

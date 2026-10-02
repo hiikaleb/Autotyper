@@ -1,0 +1,15 @@
+$ C:\Users\adson\Documents\pasta do kaleb\VsCode\AUTOTYPER\AutoTyper_v2_bandeja\dist\AutoTyper\_internal\engine\yt-dlp.exe --extractor-args youtube:player_client=tv,web_embedded;formats=missing_pot --user-agent Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 --geo-bypass --no-check-certificates --retries 5 --fragment-retries 5 --js-runtimes deno:C:\Users\adson\Documents\pasta do kaleb\VsCode\AUTOTYPER\AutoTyper_v2_bandeja\dist\AutoTyper\_internal\engine\deno.exe -x --audio-format mp3 --audio-quality 0 --ffmpeg-location C:\Users\adson\Documents\pasta do kaleb\VsCode\AUTOTYPER\AutoTyper_v2_bandeja\dist\AutoTyper\_internal\engine\ffmpeg.exe --newline -o \\192.168.137.1\paxta\PASTA\PROJETOS\PR - projects\premiere\Projetos\DOCUMENTARIO-2\02. Arquivos\Audios\Caixa registradora.%(ext)s https://www.epidemicsound.com/sound-effects/tracks/f9673ec2-4034-4c5b-a1bd-3dee6592c1c9/
+
+[EpidemicSound] Extracting URL: https://www.epidemicsound.com/sound-effects/tracks/f9673ec2-4034-4c5b-a1bd-3dee6592c1c9/
+[EpidemicSound] f9673ec2-4034-4c5b-a1bd-3dee6592c1c9: Downloading JSON metadata
+[info] 259419: Downloading 1 format(s): full
+[download] Destination: \\192.168.137.1\paxta\PASTA\PROJETOS\PR - projects\premiere\Projetos\DOCUMENTARIO-2\02. Arquivos\Audios\Caixa registradora.mp3
+[download]   0.9% of  113.13KiB at  325.77KiB/s ETA 00:00
+[download]   2.7% of  113.13KiB at  977.31KiB/s ETA 00:00
+[download]   6.2% of  113.13KiB at    2.23MiB/s ETA 00:00
+[download]  13.3% of  113.13KiB at    3.59MiB/s ETA 00:00
+[download]  27.4% of  113.13KiB at    2.37MiB/s ETA 00:00
+[download]  55.7% of  113.13KiB at    1.56MiB/s ETA 00:00
+[download] 100.0% of  113.13KiB at    1.72MiB/s ETA 00:00
+[download] 100% of  113.13KiB in 00:00:00 at 502.74KiB/s
+[ExtractAudio] Not converting audio \\192.168.137.1\paxta\PASTA\PROJETOS\PR - projects\premiere\Projetos\DOCUMENTARIO-2\02. Arquivos\Audios\Caixa registradora.mp3; file is already in target format mp3

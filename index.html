@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoTyper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- ============================================================ -->
+    <!-- Title / tab bar                                                -->
+    <!-- ============================================================ -->
+    <div class="titlebar">
+        <div class="logo-badge"><img src="AutoTyper_logo.png" alt="AutoTyper"></div>
+        <div class="app-name">AutoTyper<span>hi_kaleb edition</span></div>
+
+        <div class="tabstrip">
+            <button class="tab-btn active" data-view="downloads" onclick="switchView('downloads')"><span class="ic" data-i="download"></span> Downloads</button>
+            <button class="tab-btn" data-view="projects" onclick="switchView('projects')"><span class="ic" data-i="folder"></span> Projetos</button>
+            <button class="tab-btn" data-view="extensions" onclick="switchView('extensions')"><span class="ic" data-i="puzzle"></span> Extensões</button>
+        </div>
+
+        <div class="titlebar-right">
+            <div class="project-pill">
+                <span>Projeto:</span> <strong id="activeProjectLabel">nenhum</strong>
+            </div>
+            <button class="icon-btn" onclick="openSettings()" title="Configurações"><span class="ic" data-i="settings"></span></button>
+        </div>
+    </div>
+
+    <div class="body-row">
+
+        <!-- ======================================================== -->
+        <!-- Left icon rail                                             -->
+        <!-- ======================================================== -->
+        <div class="rail">
+            <button class="rail-btn active" data-view="downloads" onclick="switchView('downloads')">
+                <span class="ic" data-i="download"></span><small>BAIXAR</small>
+            </button>
+            <button class="rail-btn" data-view="projects" onclick="switchView('projects')">
+                <span class="ic" data-i="folder"></span><small>PROJETO</small>
+            </button>
+            <div class="rail-sep"></div>
+            <button class="rail-btn" data-view="extensions" onclick="switchView('extensions')">
+                <span class="ic" data-i="puzzle"></span><small>EXTRAS</small>
+            </button>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- Content                                                    -->
+        <!-- ======================================================== -->
+        <div class="content">
+
+            <!-- ================= DOWNLOADS (core) ================= -->
+            <section class="view" id="view-downloads">
+                <header class="view-header">
+                    <div>
+                        <p class="eyebrow">FERRAMENTA PRINCIPAL</p>
+                        <h2>Downloads</h2>
+                    </div>
+                    <div class="status-pill"><span class="dot"></span> <span id="dlStatus">Pronto</span></div>
+                </header>
+
+                <div class="download-grid">
+                    <div class="panel">
+                        <div class="panel-header">NOVO DOWNLOAD</div>
+                        <div class="panel-body">
+
+                            <div class="category-tabs" id="categoryTabs">
+                                <button class="cat-btn active" data-cat="video" onclick="selectCategory('video')"><span class="ic" data-i="video"></span> Vídeo</button>
+                                <button class="cat-btn" data-cat="audio" onclick="selectCategory('audio')"><span class="ic" data-i="music"></span> Áudio</button>
+                                <button class="cat-btn" data-cat="thumbnail" onclick="selectCategory('thumbnail')"><span class="ic" data-i="image"></span> Thumbnail</button>
+                                <button class="cat-btn" data-cat="playlist" onclick="selectCategory('playlist')"><span class="ic" data-i="list"></span> Playlist</button>
+                                <button class="cat-btn" data-cat="site" onclick="selectCategory('site')"><span class="ic" data-i="globe"></span> Outros sites</button>
+                            </div>
+
+                            <div class="field">
+                                <label>Link</label>
+                                <input id="dlUrl" type="url" placeholder="Cole aqui o link do vídeo, áudio ou site...">
+                            </div>
+
+                            <div id="qualityBlock">
+                                <label>Qualidade</label>
+                                <div class="quality-grid" id="qualityGrid"></div>
+                            </div>
+
+                            <div class="field" id="filenameField" style="display:none">
+                                <label>Nome do arquivo (opcional)</label>
+                                <input id="dlFilename" type="text" placeholder="Deixe em branco para usar o título original">
+                            </div>
+
+                            <div class="controls">
+                                <button class="btn btn-accent" onclick="startDownload()">
+                                    <span class="ic" data-i="download"></span> BAIXAR
+                                </button>
+                                <button class="btn" id="epidemicBtn" onclick="epidemicLogin()" style="display:none">
+                                    <span class="ic" data-i="key"></span> LOGIN EPIDEMIC SOUND
+                                </button>
+                                <button class="btn" id="formatsBtn" onclick="showFormats()" style="display:none">
+                                    <span class="ic" data-i="list"></span> MOSTRAR FORMATOS
+                                </button>
+                                <button class="btn" id="sitesBtn" onclick="showSupportedSites()" style="display:none">
+                                    <span class="ic" data-i="globe"></span> VER SITES SUPORTADOS
+                                </button>
+                                <button class="btn" onclick="openDownloadsLog()">
+                                    <span class="ic" data-i="file"></span> VER LOG
+                                </button>
+                            </div>
+
+                            <div class="progress-wrap" id="progressWrap">
+                                <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+                                <div class="progress-msg" id="progressMsg"></div>
+                            </div>
+
+                            <div id="queueWrap" style="display:none; margin-top:14px">
+                                <div style="font-size:11px; color:var(--muted); font-weight:700; letter-spacing:.5px; text-transform:uppercase; margin-bottom:8px">Na fila</div>
+                                <div class="recent-list" id="queueList"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <span>ATIVIDADE RECENTE</span>
+                            <button class="btn btn-sm" onclick="openActiveProjectFolder()"><span class="ic" data-i="folder-open"></span> Pasta</button>
+                        </div>
+                        <div class="panel-body">
+                            <div class="recent-list" id="recentList">
+                                <div style="color:var(--muted); font-size:12px">Nenhum download nesta sessão ainda.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= PROJECTS ================= -->
+            <section class="view hidden" id="view-projects">
+                <header class="view-header">
+                    <div>
+                        <p class="eyebrow">ORGANIZAÇÃO</p>
+                        <h2>Projetos</h2>
+                    </div>
+                </header>
+
+                <div class="panel">
+                    <div class="panel-header">SEUS PROJETOS</div>
+                    <div class="panel-body">
+                        <div class="project-grid" id="projectGrid">
+                            <button class="project-card new-project-card" onclick="createProjectPrompt()">
+                                <span class="ic" data-i="plus" style="font-size:20px"></span>
+                                <span style="font-size:12px">Novo projeto</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <span>ARQUIVOS DO PROJETO — <span id="mediaProjectLabel">nenhum projeto</span></span>
+                        <button class="btn btn-sm" onclick="openActiveProjectFolder()"><span class="ic" data-i="folder-open"></span> Abrir no Explorador</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="media-layout">
+                            <div class="media-sidebar" id="mediaSidebar">
+                                <div class="folder-crumbs" id="folderCrumbs">/</div>
+                                <div id="folderList"></div>
+                            </div>
+
+                            <div class="media-main">
+                                <div class="player-panel" id="playerPanel">
+                                    <div class="player-empty" id="playerEmpty">Selecione um arquivo de vídeo ou áudio para pré-visualizar</div>
+                                    <video id="videoPlayer" style="display:none"></video>
+                                    <div class="audio-player-bar" id="audioPlayerBar">
+                                        <div class="a-icon"><span class="ic" data-i="music"></span></div>
+                                        <div id="audioFileName" style="font-size:12.5px; color:var(--muted)"></div>
+                                    </div>
+                                    <audio id="audioPlayer"></audio>
+
+                                    <div class="custom-controls" id="customControls">
+                                        <button class="cc-btn" id="ccPlayBtn" onclick="togglePlayback()"><span class="ic" data-i="play"></span></button>
+                                        <span class="cc-time" id="ccCurrentTime">0:00</span>
+                                        <div class="cc-seek" id="ccSeek">
+                                            <div class="cc-seek-buffered" id="ccSeekBuffered"></div>
+                                            <div class="cc-seek-fill" id="ccSeekFill"></div>
+                                            <div class="cc-seek-handle" id="ccSeekHandle"></div>
+                                        </div>
+                                        <span class="cc-time" id="ccDuration">0:00</span>
+                                        <button class="cc-btn cc-btn-sm" id="ccMuteBtn" onclick="toggleMute()"><span class="ic" data-i="volume-high"></span></button>
+                                        <div class="cc-volume" id="ccVolume">
+                                            <div class="cc-volume-fill" id="ccVolumeFill"></div>
+                                            <div class="cc-volume-handle" id="ccVolumeHandle"></div>
+                                        </div>
+                                        <button class="cc-btn cc-btn-sm" id="ccFullscreenBtn" onclick="toggleFullscreen()"><span class="ic" data-i="expand"></span></button>
+                                    </div>
+                                </div>
+
+                                <div class="file-grid" id="fileGrid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= EXTENSIONS (hub) ================= -->
+            <section class="view hidden" id="view-extensions">
+                <header class="view-header">
+                    <div>
+                        <p class="eyebrow">FUNÇÕES EXTRAS</p>
+                        <h2>Extensões</h2>
+                    </div>
+                </header>
+
+                <div class="ext-grid">
+                    <button class="ext-card" onclick="switchView('ext-typing')">
+                        <div class="e-icon"><span class="ic" data-i="keyboard"></span></div>
+                        <div class="e-title">Digitação automática</div>
+                        <div class="e-desc">Digita um texto sozinho, com erros humanos simulados.</div>
+                    </button>
+                    <button class="ext-card" onclick="switchView('ext-shots')">
+                        <div class="e-icon"><span class="ic" data-i="camera"></span></div>
+                        <div class="e-title">Screenshots</div>
+                        <div class="e-desc">Captura tela inteira ou uma área selecionada.</div>
+                    </button>
+                    <button class="ext-card" onclick="switchView('ext-memory')">
+                        <div class="e-icon"><span class="ic" data-i="brain"></span></div>
+                        <div class="e-title">Memória (RAM)</div>
+                        <div class="e-desc">Libera memória do sistema, com agendamento automático.</div>
+                    </button>
+                    <button class="ext-card" onclick="switchView('ext-engine')">
+                        <div class="e-icon"><span class="ic" data-i="settings"></span></div>
+                        <div class="e-title">Configurações do motor</div>
+                        <div class="e-desc">Atualizar yt-dlp, resetar cookies, backup do Premiere.</div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- ---- Extension: Engine settings ---- -->
+            <section class="view hidden" id="view-ext-engine">
+                <button class="ext-back" onclick="switchView('extensions')"><span class="ic" data-i="arrow-left"></span> Voltar para Extensões</button>
+                <header class="view-header">
+                    <div>
+                        <p class="eyebrow">MOTOR DE DOWNLOAD</p>
+                        <h2>Configurações do motor</h2>
+                    </div>
+                </header>
+
+                <div class="panel">
+                    <div class="panel-header">YT-DLP E COOKIES</div>
+                    <div class="panel-body controls">
+                        <button class="btn btn-accent" onclick="runEngineAction('update_ytdlp', 'yt-dlp atualizado')"><span class="ic" data-i="refresh"></span> ATUALIZAR YT-DLP</button>
+                        <button class="btn" onclick="epidemicLogin()"><span class="ic" data-i="key"></span> RECAPTURAR COOKIES</button>
+                        <button class="btn btn-danger" onclick="runEngineAction('reset_cookies', 'Cookies resetados')"><span class="ic" data-i="trash"></span> RESETAR COOKIES</button>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">PREMIERE PRO</div>
+                    <div class="panel-body controls">
+                        <button class="btn btn-accent" onclick="runEngineAction('backup_premiere_config', 'Backup do Premiere feito')"><span class="ic" data-i="download"></span> BACKUP DO PREMIERE</button>
+                        <button class="btn" onclick="runEngineAction('restore_premiere_config', 'Premiere restaurado')"><span class="ic" data-i="folder-open"></span> RESTAURAR PREMIERE</button>
+                    </div>
+                    <div class="panel-body" style="padding-top:0">
+                        <small>Backup salva seus atalhos (.kys) e workspaces (.xml) do perfil atual. Restaurar coloca esse backup de volta — use depois de formatar/reinstalar.</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ---- Extension: Typing ---- -->
+            <section class="view hidden" id="view-ext-typing">
+                <button class="ext-back" onclick="switchView('extensions')"><span class="ic" data-i="arrow-left"></span> Voltar para Extensões</button>
+                <header class="view-header">
+                    <div>
+                        <p class="eyebrow">DIGITAÇÃO AUTOMÁTICA</p>
+                        <h2>Seu texto</h2>
+                    </div>
+                    <div id="status" class="status-pill"><span class="dot"></span>Pronto</div>
+                </header>
+
+                <div class="panel">
+                    <div class="editor-top">
+                        <span>Texto para digitar</span>
+                        <span id="counter">0 caracteres</span>
+                    </div>
+                    <textarea id="text" class="type-textarea"
+                        placeholder="Digite ou cole aqui o texto que será digitado automaticamente..."
+                        oninput="updateCounter()"></textarea>
+                    <div class="editor-footer">
+                        <span>Depois de iniciar, clique no local onde deseja digitar.</span>
+                        <span style="color:var(--green)">● Sistema pronto</span>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-accent" onclick="startTyping()"><span class="ic" data-i="play"></span> INICIAR</button>
+                    <button class="btn btn-danger" onclick="stopTyping()"><span class="ic" data-i="stop"></span> PARAR</button>
+                    <button class="btn" onclick="openSettings()"><span><span class="ic" data-i="settings"></span></span> CONFIGURAÇÕES</button>
+                    <button class="btn" onclick="minimizeToTray()"><span class="ic" data-i="minimize"></span> MINIMIZAR</button>
+                </div>
+
+                <div class="stats">
+                    <div class="stat"><span>Erros</span><strong id="errorStat">2.5%</strong></div>
+                    <div class="stat"><span>Velocidade</span><strong id="speedStat">30–90 ms</strong></div>
+                    <div class="stat"><span>Screenshot</span><strong id="shotStat">F8</strong></div>
+                </div>
+            </section>
+
+            <!-- ---- Extension: Screenshots ---- -->
+            <section class="view hidden" id="view-ext-shots">
+                <button class="ext-back" onclick="switchView('extensions')"><span class="ic" data-i="arrow-left"></span> Voltar para Extensões</button>
+                <header class="view-header">
+                    <div>
+                        <p class="eyebrow">CAPTURA DE TELA</p>
+                        <h2>Screenshots</h2>
+                    </div>
+                    <div class="status-pill"><span class="dot"></span><span id="shotsFolderLabel">screenshots/</span></div>
+                </header>
+
+                <div class="controls">
+                    <button class="btn btn-accent" onclick="takeScreenshot()"><span class="ic" data-i="camera"></span> TELA INTEIRA</button>
+                    <button class="btn btn-brand" onclick="takeScreenshotRegion()"><span class="ic" data-i="square-select"></span> SELECIONAR ÁREA</button>
+                    <button class="btn" onclick="openScreenshotsFolder()"><span class="ic" data-i="folder-open"></span> ABRIR PASTA</button>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-body shot-preview">
+                        <div class="shot-thumb" id="shotThumb">Sem prévia</div>
+                        <div class="shot-meta">
+                            <div class="file-empty" id="shotMetaEmpty">Nenhum screenshot ainda nesta sessão.</div>
+                            <div class="file-name-txt hidden" id="shotFileName"></div>
+                            <div class="controls" id="shotMetaActions" style="display:none">
+                                <button class="btn btn-sm" onclick="copyLastShotPath()"><span class="ic" data-i="copy"></span> COPIAR CAMINHO</button>
+                                <button class="btn btn-sm" onclick="openScreenshotsFolder()"><span class="ic" data-i="folder-open"></span> VER NA PASTA</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <span>GRAVAÇÃO DE TELA</span>
+                        <span id="recIndicator" class="rec-indicator hidden"><span class="rec-dot"></span> <span id="recTimer">00:00</span></span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="field-row" style="max-width:640px">
+                            <div class="field">
+                                <label>Qualidade</label>
+                                <select id="recQuality"></select>
+                            </div>
+                            <div class="field">
+                                <label>Áudio (opcional)</label>
+                                <select id="recAudioDevice">
+                                    <option value="">Sem áudio</option>
+                                </select>
+                            </div>
+                        </div>
+                        <small>Se quiser gravar o áudio do sistema, ative "Estéreo Mix" (ou instale o VB-Cable/VoiceMeeter) e selecione o dispositivo aqui. Microfones aparecem direto.</small>
+
+                        <div class="controls" style="margin-top:14px">
+                            <button class="btn btn-accent" id="recFullBtn" onclick="startRecording('full')"><span class="ic" data-i="video"></span> GRAVAR TELA INTEIRA</button>
+                            <button class="btn btn-brand" id="recRegionBtn" onclick="startRecording('region')"><span class="ic" data-i="square-select"></span> GRAVAR ÁREA</button>
+                            <button class="btn btn-danger hidden" id="recStopBtn" onclick="stopRecording()"><span class="ic" data-i="stop"></span> PARAR GRAVAÇÃO</button>
+                            <button class="btn btn-danger hidden" id="recCancelBtn" onclick="cancelRecording()"><span class="ic" data-i="trash"></span> DESCARTAR</button>
+                            <button class="btn btn-sm" onclick="refreshAudioDevices(true)"><span class="ic" data-i="refresh"></span> ATUALIZAR LISTA DE ÁUDIO</button>
+                        </div>
+                        <small>Grava em MP4 direto na pasta de screenshots, usando o ffmpeg já embutido no app.</small>
+
+                        <div class="shot-preview" style="margin-top:14px; display:none" id="recPreviewWrap">
+                            <div class="shot-thumb" id="recThumb">Sem prévia</div>
+                            <div class="shot-meta">
+                                <div class="file-name-txt" id="recFileName"></div>
+                                <div class="controls">
+                                    <button class="btn btn-sm" onclick="openScreenshotsFolder()"><span class="ic" data-i="folder-open"></span> VER NA PASTA</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ---- Extension: Memory ---- -->
+            <section class="view hidden" id="view-ext-memory">
+                <button class="ext-back" onclick="switchView('extensions')"><span class="ic" data-i="arrow-left"></span> Voltar para Extensões</button>
+                <header class="view-header">
+                    <div>
+                        <p class="eyebrow">OTIMIZAÇÃO DO SISTEMA</p>
+                        <h2>Memória RAM</h2>
+                    </div>
+                    <div class="status-pill"><span class="dot"></span><span id="memLastRun">Nunca otimizado</span></div>
+                </header>
+
+                <div class="panel">
+                    <div class="panel-body mem-grid">
+                        <div class="ring-wrap">
+                            <svg viewBox="0 0 200 200">
+                                <defs>
+                                    <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#2f9bff"/>
+                                        <stop offset="100%" stop-color="#9c7bff"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle class="ring-track" cx="100" cy="100" r="86"></circle>
+                                <circle class="ring-value" id="ringValue" cx="100" cy="100" r="86"
+                                        stroke-dasharray="540" stroke-dashoffset="540"></circle>
+                            </svg>
+                            <div class="ring-center">
+                                <strong id="ramPercent">--%</strong>
+                                <span>em uso</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="mem-row"><span>Total</span><strong id="ramTotal">-- GB</strong></div>
+                            <div class="mem-row"><span>Disponível</span><strong id="ramAvailable">-- GB</strong></div>
+                            <div class="mem-row"><span>Última limpeza liberou</span><strong id="ramFreed">--</strong></div>
+
+                            <div class="controls">
+                                <button class="btn btn-accent" onclick="reduceMemory()"><span class="ic" data-i="brain"></span> LIBERAR MEMÓRIA AGORA</button>
+                                <button class="btn" onclick="refreshMemoryStats()"><span class="ic" data-i="refresh"></span> ATUALIZAR</button>
+                            </div>
+                            <div class="mem-log" id="memLog"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">FUNÇÕES EXTRAS</div>
+                    <div class="panel-body controls">
+                        <button class="btn" onclick="runExtra('clear_temp_files', 'Temporários limpos')"><span class="ic" data-i="trash"></span> LIMPAR TEMPORÁRIOS</button>
+                        <button class="btn" onclick="runExtra('empty_recycle_bin', 'Lixeira esvaziada')"><span class="ic" data-i="recycle"></span> ESVAZIAR LIXEIRA</button>
+                        <button class="btn" onclick="runExtra('clear_clipboard', 'Área de transferência limpa')"><span class="ic" data-i="copy"></span> LIMPAR ÁREA DE TRANSFERÊNCIA</button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+
+<!-- ================= SETTINGS MODAL ================= -->
+<div class="modal hidden" id="settingsModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">PERSONALIZAÇÃO</p>
+                <h2 style="margin:4px 0 0; font-size:18px">Configurações</h2>
+            </div>
+            <button class="close" onclick="closeSettings()">×</button>
+        </div>
+
+        <div class="settings-scroll">
+
+            <div class="settings-section">
+                <div class="settings-section-title"><span class="ic" data-i="settings"></span> Geral</div>
+                <div class="field">
+                    <div class="checks"><label><input id="typingSound" type="checkbox"> Som ao digitar / trocar de aba</label></div>
+                </div>
+                <div class="field">
+                    <div class="checks">
+                        <label><input id="minimizeToTray" type="checkbox"> Minimizar para bandeja ao fechar</label>
+                        <label><input id="startHidden" type="checkbox"> Iniciar oculto</label>
+                        <label><input id="startWithWindows" type="checkbox"> Iniciar com o Windows</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title"><span class="ic" data-i="keyboard"></span> Atalhos de teclado</div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Iniciar/parar digitação</label>
+                        <input id="startHotkey" type="text" class="hotkey-input" readonly>
+                    </div>
+                    <div class="field">
+                        <label>Screenshot (tela toda)</label>
+                        <input id="screenshotHotkey" type="text" class="hotkey-input" readonly>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Screenshot (área)</label>
+                    <input id="screenshotRegionHotkey" type="text" class="hotkey-input" readonly>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title"><span class="ic" data-i="keyboard"></span> Digitação automática</div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Atraso mínimo (ms)</label>
+                        <input id="minDelay" type="number" min="1">
+                    </div>
+                    <div class="field">
+                        <label>Atraso máximo (ms)</label>
+                        <input id="maxDelay" type="number" min="1">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Porcentagem de erros</label>
+                    <input id="errorPercent" type="number" min="0" max="100" step="0.1">
+                </div>
+                <div class="field">
+                    <label>Tipos de erros</label>
+                    <div class="checks">
+                        <label><input id="removeError" type="checkbox"> Remover letra</label>
+                        <label><input id="addError" type="checkbox"> Adicionar letra</label>
+                        <label><input id="swapError" type="checkbox"> Trocar letra</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title"><span class="ic" data-i="folder"></span> Projetos e arquivos</div>
+                <div class="field">
+                    <label>Pasta raiz dos projetos</label>
+                    <div style="display:flex; gap:8px">
+                        <input id="projectsRoot" type="text" placeholder="Pasta onde os projetos serão criados">
+                        <button class="btn" onclick="chooseProjectsRoot()">Procurar</button>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Pasta dos screenshots</label>
+                    <input id="folder" type="text">
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <div class="settings-section-title"><span class="ic" data-i="brain"></span> Memória (RAM)</div>
+                <div class="field">
+                    <div class="checks">
+                        <label><input id="autoReduceMemory" type="checkbox"> Liberar memória automaticamente</label>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>A cada quantos minutos</label>
+                        <input id="autoReduceInterval" type="number" min="1">
+                    </div>
+                    <div class="field">
+                        <label>Ou quando RAM passar de (%)</label>
+                        <input id="autoReduceThreshold" type="number" min="1" max="100">
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section settings-section-danger">
+                <div class="settings-section-title"><span class="ic" data-i="stop"></span> Sair</div>
+                <p style="color:var(--muted); font-size:12px; margin:0 0 10px">
+                    Fechar pelo X só minimiza para a bandeja (se a opção acima estiver marcada). Use o botão abaixo pra encerrar de vez.
+                </p>
+                <div class="controls">
+                    <button class="btn" onclick="openCrashLog()"><span class="ic" data-i="file"></span> VER LOG DE ERROS</button>
+                    <button class="btn btn-danger" onclick="quitApp()"><span class="ic" data-i="stop"></span> SAIR COMPLETAMENTE</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn" onclick="closeSettings()">Cancelar</button>
+            <button class="btn btn-accent" onclick="saveSettings()">SALVAR</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

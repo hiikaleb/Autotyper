@@ -1,0 +1,7 @@
+pywebview
+pyautogui
+keyboard
+pyperclip
+Pillow
+pystray
+psutil

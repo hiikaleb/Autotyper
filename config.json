@@ -1,0 +1,14 @@
+{
+  "start_hotkey": "ctrl+alt+print screen",
+  "screenshot_hotkey": "f8",
+  "screenshot_region_hotkey": "shift+f8",
+  "error_percent": 2.5,
+  "min_delay_ms": 30,
+  "max_delay_ms": 90,
+  "remove_error": true,
+  "add_error": true,
+  "swap_error": true,
+  "screenshot_folder": "screenshots",
+  "minimize_to_tray": true,
+  "start_hidden": false
+}
